@@ -4,5 +4,16 @@ const app = require('./app.js');
 
 const port = process.env.PORT || 3002;
 
-app.listen(port);
+
+
+
+app
+.use(
+    '/graphql',
+    expressGraphQL({
+      schema,
+      rootValue: resolvers,
+      graphiql: true,
+    })
+).listen(port);
 console.log('listening at:', port); // eslint-disable-line
