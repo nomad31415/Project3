@@ -1,6 +1,41 @@
-/
+
 
 const express = require('express');
+const expressGraphQL = require('express-graphql');
+const { buildSchema } = require('graphql');
+
+const db = {
+  users: [{ name: 'Tyler' }, { name: 'Brett' }, { name: 'Josh' }],
+};
+
+
+
+// GraphQL stuff
+const resolvers = {
+  users: () => {
+    const { users } = db;
+    return users;
+  },
+  createUser: ({ name }) => {
+    const user = { name };
+    db.users.push(user);
+    return user;
+  },
+};
+
+const schema = buildSchema(`
+  type Query {
+    users: [User]
+  }
+  type Mutation {
+    createUser(name: String): User
+  }
+  type User {
+    name: String
+  }
+`);
+
+
 const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 
 const app = express();
